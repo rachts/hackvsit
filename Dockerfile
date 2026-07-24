@@ -16,6 +16,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build the application
+ENV MONGODB_URI="mongodb://localhost:27017/dummy"
+ENV NEXTAUTH_SECRET="dummy_secret"
 RUN npm run build
 
 # Production image, copy all the files and run next

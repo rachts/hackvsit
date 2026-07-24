@@ -39,7 +39,7 @@ Vitamend Team
     });
   } catch (error) {
     console.error("Donation creation error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -48,7 +48,7 @@ const getMyDonations = async (req, res) => {
     const donations = await Donation.find({ user: req.user._id });
     res.json({ success: true, message: 'Donations fetched', data: donations });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -57,7 +57,7 @@ const getAllDonations = async (req, res) => {
     const donations = await Donation.find({}).populate('user', 'name email');
     res.json({ success: true, message: 'All donations fetched', data: donations });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -72,7 +72,7 @@ const updateDonationStatus = async (req, res) => {
       res.status(404).json({ success: false, message: 'Donation not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 

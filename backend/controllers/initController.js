@@ -60,7 +60,7 @@ const initDatabase = async (req, res) => {
     console.error("[DB Init] Error:", error);
     res.status(500).json({
       success: false,
-      message: error.message || "Failed to initialize database",
+      message: process.env.NODE_ENV === 'production' ? 'Internal server error' : (error.message || "Failed to initialize database"),
     });
   }
 };

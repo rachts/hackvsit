@@ -58,7 +58,7 @@ export default function SettingsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" defaultValue={user.displayName || ""} />
+                  <Input id="name" defaultValue={user.name || (user as any).displayName || ""} />
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>

@@ -11,21 +11,26 @@ const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
 
+      const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
+      if (!secret) {
+        return res.status(500).json({ message: 'Server auth misconfiguration: JWT secret missing' });
+      }
+
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET);
+      const decoded = jwt.verify(token, secret);
 
       // Get user from the token
       req.user = await User.findById(decoded.id).select('-password');
 
-      next();
+      return next();
     } catch (error) {
       console.error(error);
-      res.status(401).json({ message: 'Not authorized, token failed' });
+      return res.status(401).json({ message: 'Not authorized, token failed' });
     }
   }
 
   if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 

@@ -92,3 +92,18 @@ tmp/
 temp/
 *.tmp
 *.temp
+
+# Python & Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+
+# Service Uploads
+ocr-service/uploads/*
+!ocr-service/uploads/.gitkeep
+backend/.env
+

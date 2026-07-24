@@ -3,7 +3,11 @@ const User = require('../models/User');
 const { generateResetToken, hashToken } = require('../utils/generateResetToken');
 const emailService = require('../services/emailService');
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET, {
+  const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET or NEXTAUTH_SECRET environment variable is not defined');
+  }
+  return jwt.sign({ id }, secret, {
     expiresIn: '30d',
   });
 };

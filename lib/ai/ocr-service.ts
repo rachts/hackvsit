@@ -93,6 +93,14 @@ export class OCRService {
     return [];
   }
 
+  static async extractText(_imageUrl: string): Promise<{ text: string; confidence: number; words: string[] }> {
+    return {
+      text: "",
+      confidence: 0,
+      words: [],
+    };
+  }
+
   static async terminate(): Promise<void> {
     // No-op for API-based service
   }

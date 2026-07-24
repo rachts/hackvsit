@@ -68,7 +68,7 @@ export default function ProfilePage() {
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <User className="h-10 w-10 text-green-600" />
                 </div>
-                <CardTitle>{user.displayName || "User"}</CardTitle>
+                <CardTitle>{user.name || (user as any).displayName || "User"}</CardTitle>
                 <CardDescription>{user.email}</CardDescription>
                 <Badge className="mt-2">Donor</Badge>
               </CardHeader>
@@ -81,8 +81,8 @@ export default function ProfilePage() {
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
                     Joined{" "}
-                    {user.metadata?.creationTime
-                      ? new Date(user.metadata.creationTime).toLocaleDateString()
+                    {(user as any).metadata?.creationTime
+                      ? new Date((user as any).metadata.creationTime).toLocaleDateString()
                       : "Recently"}
                   </span>
                 </div>

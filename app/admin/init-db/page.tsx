@@ -30,7 +30,7 @@ export default function InitDatabasePage() {
   }
 
   // Check if user is admin (you can customize this based on your auth setup)
-  const isAdmin = user?.role === "admin" || (user?.email && user.email.endsWith("@vitamend.org"))
+  const isAdmin = (user as any)?.role === "admin" || (user?.email && user.email.endsWith("@vitamend.org"))
 
   if (status !== "loading" && user && !isAdmin) {
     router.push("/dashboard")

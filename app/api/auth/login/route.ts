@@ -4,7 +4,11 @@ import User from "@/backend/models/User";
 import jwt from "jsonwebtoken";
 
 const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || "fallback_secret", {
+  const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET or NEXTAUTH_SECRET environment variable is not defined");
+  }
+  return jwt.sign({ id }, secret, {
     expiresIn: "30d",
   });
 };

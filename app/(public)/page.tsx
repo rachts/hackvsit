@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { LiveDemo } from "@/components/live-demo"
 
 export default function HomePage() {
   const [stats, setStats] = useState({
@@ -88,7 +89,7 @@ export default function HomePage() {
       </section>
 
       {/* Impact Stats Section */}
-      <section className="py-xl bg-surface-container-lowest border-y border-outline-variant/10">
+      <section id="impact" className="py-xl bg-surface-container-lowest border-y border-outline-variant/10">
         <div className="max-w-screen-2xl mx-auto px-gutter">
           <div className="text-center mb-lg">
             <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">Measurable Global Impact</h2>
@@ -115,7 +116,7 @@ export default function HomePage() {
       </section>
 
       {/* Bento Features Section */}
-      <section className="py-xl bg-background">
+      <section id="features" className="py-xl bg-background">
         <div className="max-w-screen-2xl mx-auto px-gutter">
           <div className="mb-lg max-w-3xl">
             <h2 className="font-headline-lg text-headline-lg text-on-surface mb-4">Intelligent Infrastructure for Healthcare</h2>
@@ -227,14 +228,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Live Demo Section */}
+      <section id="demo" className="py-xl bg-surface-container-lowest border-t border-outline-variant/10">
+        <div className="max-w-screen-2xl mx-auto px-gutter">
+          <div className="text-center mb-12">
+            <h2 className="font-headline-lg text-headline-lg text-on-surface mb-4">Try Vitamend AI</h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+              Experience our computer vision technology in action. See how we verify the authenticity and eligibility of medical supplies in real-time.
+            </p>
+          </div>
+          <LiveDemo />
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-xl relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary-container -z-20"></div>
+      <section className="py-xl relative overflow-hidden bg-primary-container">
         {/* Decorative subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-10 -z-10" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "24px 24px" }}></div>
-        <div className="max-w-screen-lg mx-auto px-gutter text-center z-10">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "24px 24px" }}></div>
+        <div className="max-w-screen-lg mx-auto px-gutter text-center relative z-10">
           <h2 className="font-display-lg text-display-lg text-on-primary mb-6">Ready to Transform Medical Logistics?</h2>
-          <p className="font-body-lg text-body-lg text-on-primary-container max-w-2xl mx-auto mb-10">
+          <p className="font-body-lg text-body-lg text-on-primary max-w-2xl mx-auto mb-10 opacity-90">
             Join our network of hospitals, clinics, and pharmacies working together to eliminate medical waste and improve patient outcomes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -248,22 +261,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="w-full py-12 bg-surface-container-low grid grid-cols-1 md:grid-cols-4 gap-8 px-gutter max-w-screen-2xl mx-auto border-t border-outline-variant/20">
-        <div className="col-span-1 md:col-span-1 flex flex-col gap-4">
-          <span className="font-headline-sm text-headline-sm text-primary font-bold">VITAMEND</span>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">Medical Logistics</p>
-        </div>
-        <div className="col-span-1 md:col-span-3 flex flex-col md:flex-row justify-end items-start md:items-center gap-6">
-          <Link href="/privacy" className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100">Privacy Policy</Link>
-          <Link href="/terms" className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100">Terms of Service</Link>
-          <Link href="/compliance" className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100">Compliance</Link>
-          <Link href="/contact" className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100">Contact Support</Link>
-        </div>
-        <div className="col-span-1 md:col-span-4 mt-8 pt-8 border-t border-outline-variant/10">
-          <p className="font-body-sm text-body-sm text-on-surface-variant text-center">© 2024 VITAMEND Medical Logistics. All rights reserved.</p>
-        </div>
-      </footer>
     </main>
   )
 }

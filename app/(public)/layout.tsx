@@ -1,4 +1,4 @@
-
+import { Navigation } from "@/components/navigation"
 
 export default function PublicLayout({
   children,
@@ -7,7 +7,7 @@ export default function PublicLayout({
 }) {
   return (
     <>
-
+      <Navigation />
       <div className="flex-1">
         {children}
       </div>

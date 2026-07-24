@@ -115,7 +115,7 @@ async def ocr_check(file: UploadFile = File(...), db=Depends(get_db)) -> JSONRes
     Runs ensemble preprocessing, concurrent OCR, QR detection, and SSIM tamper detection.
     """
     start_time = time.time()
-    logger.info("Received verification request", extra={"filename": file.filename})
+    logger.info("Received verification request", extra={"file_name": file.filename})
 
     if not allowed_content_type(file.content_type):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Unsupported image type")

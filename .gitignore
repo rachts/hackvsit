@@ -15,11 +15,22 @@ dist/
 .env
 .env.local
 env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
 .env*.local
 !.env.example
+
+# Private keys & certificates
+*.pem
+*.key
+*.crt
+
+# Service account files
+service-account*.json
 
 # Testing
 coverage/

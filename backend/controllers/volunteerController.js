@@ -25,7 +25,7 @@ const registerVolunteer = async (req, res) => {
     
     res.status(201).json({ success: true, message: 'Volunteer application submitted successfully!', data: volunteer });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -34,7 +34,7 @@ const getVolunteers = async (req, res) => {
     const volunteers = await Volunteer.find({}).populate('user', 'name email phone');
     res.json({ success: true, message: 'Volunteers fetched', data: volunteers });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -49,7 +49,7 @@ const updateVolunteerStatus = async (req, res) => {
       res.status(404).json({ success: false, message: 'Volunteer not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 

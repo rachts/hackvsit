@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectMongoose from "@/lib/db/mongoose";
 import Donation from "@/backend/models/Donation";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
 // Since Donation form has its own fields, we might need a dedicated model or just use existing.
 // Let's assume the backend model matches or we adapt.
 
@@ -35,16 +37,21 @@ export async function POST(req: NextRequest) {
     }, { status: 201 });
   } catch (error: any) {
     console.error("Donation API Error:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === "production" ? "Internal server error" : error.message }, { status: 500 });
   }
 }
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user as any).role !== "admin") {
+      return NextResponse.json({ success: false, message: "Not authorized" }, { status: 401 });
+    }
+
     await connectMongoose();
     const donations = await Donation.find({}).sort({ createdAt: -1 });
     return NextResponse.json({ success: true, data: donations });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: process.env.NODE_ENV === "production" ? "Internal server error" : error.message }, { status: 500 });
   }
 }

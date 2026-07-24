@@ -18,6 +18,10 @@ export async function POST(req: NextRequest) {
     await connectMongoose();
     const { name, email, password, role, phone, address } = await req.json();
 
+    if (!name || !email || !password) {
+      return NextResponse.json({ success: false, message: "Please provide name, email and password" }, { status: 400 });
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists) {
       return NextResponse.json(
@@ -56,7 +60,6 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error: any) {
-    console.error("Register API Error Details:", JSON.stringify(error, null, 2));
     console.error("Register API Error Message:", error.message);
     
     // Improve error message for pattern failures
@@ -65,8 +68,13 @@ export async function POST(req: NextRequest) {
       errorMessage = "Validation failed: Password must contain at least 1 uppercase letter, 1 number, and 1 special character. Name must not contain invalid characters, and Email must be correctly formatted.";
     }
 
+    const isProd = process.env.NODE_ENV === "production";
     return NextResponse.json(
-      { success: false, message: errorMessage, details: error },
+      {
+        success: false,
+        message: isProd && !errorMessage.includes("Validation failed") ? "Internal server error" : errorMessage,
+        details: isProd ? undefined : error
+      },
       { status: 500 }
     );
   }

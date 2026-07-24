@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const getProfile = async (req, res) => {
   try {
     const { userId } = req.params;
+    if (req.user._id.toString() !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({ message: "Not authorized to access this profile" });
+    }
     const db = mongoose.connection.db;
     const profile = await db.collection("profiles").findOne({ userId });
 
@@ -17,13 +20,16 @@ const getProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("[MongoDB] Error fetching profile:", error);
-    res.status(500).json({ message: error.message || "Failed to fetch profile" });
+    res.status(500).json({ message: process.env.NODE_ENV === 'production' ? 'Internal server error' : (error.message || "Failed to fetch profile") });
   }
 };
 
 const upsertProfile = async (req, res) => {
   try {
     const { userId } = req.params;
+    if (req.user._id.toString() !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: "Not authorized to update this profile" });
+    }
     const data = req.body;
     const db = mongoose.connection.db;
 
@@ -40,12 +46,12 @@ const upsertProfile = async (req, res) => {
         },
       },
       { upsert: true }
-    );
+      );
 
     res.json({ success: true });
   } catch (error) {
     console.error("[MongoDB] Error updating profile:", error);
-    res.status(500).json({ success: false, error: error.message || "Failed to update profile" });
+    res.status(500).json({ success: false, error: process.env.NODE_ENV === 'production' ? 'Internal server error' : (error.message || "Failed to update profile") });
   }
 };
 

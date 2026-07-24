@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ success: true, message: 'Volunteer application submitted successfully!', data: volunteer }, { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message }, { status: 500 });
   }
 }
 
@@ -45,6 +45,6 @@ export async function GET() {
     const volunteers = await Volunteer.find({}).populate('user', 'name email phone');
     return NextResponse.json({ success: true, message: 'Volunteers fetched', data: volunteers });
   } catch (error: any) {
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message }, { status: 500 });
   }
 }

@@ -17,8 +17,8 @@ export function middleware(req: NextRequest) {
   const allOrigins = envOrigins.concat(defaultOrigins)
   const allowedOrigins = allOrigins.filter((val, index) => allOrigins.indexOf(val) === index)
   
-  // Allow Vercel preview deployments and exact matches
-  const isVercelOrigin = origin.endsWith(".vercel.app") || origin.endsWith(".vercel.com")
+  // Allow Vercel preview deployments (only for vitamend) and exact matches
+  const isVercelOrigin = origin.endsWith("-vitamend.vercel.app") || origin.endsWith("-vitamend.vercel.com") || origin === "https://vitamend.vercel.app"
   const isAllowed = allowedOrigins.includes(origin) || isVercelOrigin
   
   const allowOrigin = isAllowed ? origin : allowedOrigins[0]

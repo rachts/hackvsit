@@ -14,6 +14,9 @@ const generateToken = (id) => {
 const registerUser = async (req, res, next) => {
   try {
     const { name, email, password, role, phone, address } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide name, email and password' });
+    }
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ success: false, message: 'User already exists' });
@@ -35,12 +38,15 @@ const registerUser = async (req, res, next) => {
       res.status(400).json({ success: false, message: 'Invalid user data' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide email and password' });
+    }
     const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
       res.json({
@@ -58,7 +64,7 @@ const loginUser = async (req, res, next) => {
       res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 const getUserProfile = async (req, res, next) => {
@@ -70,7 +76,7 @@ const getUserProfile = async (req, res, next) => {
       res.status(404).json({ success: false, message: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 const forgotPassword = async (req, res, next) => {
@@ -103,7 +109,7 @@ const forgotPassword = async (req, res, next) => {
       throw new Error('Email could not be sent');
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 const resetPassword = async (req, res, next) => {
@@ -128,7 +134,7 @@ const resetPassword = async (req, res, next) => {
     await user.save();
     res.status(200).json({ success: true, message: 'Password reset successful' });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 module.exports = { registerUser, loginUser, getUserProfile, forgotPassword, resetPassword };

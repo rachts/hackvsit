@@ -11,7 +11,7 @@ const addMedicine = async (req, res) => {
     
     res.status(201).json({ success: true, message: 'Medicine added successfully', data: medicine });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -20,7 +20,7 @@ const getMedicines = async (req, res) => {
     const medicines = await Medicine.find({ status: 'approved' }).populate('donor', 'name email');
     res.json({ success: true, message: 'Medicines fetched', data: medicines });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -37,7 +37,7 @@ const updateMedicineStatus = async (req, res) => {
       res.status(404).json({ success: false, message: 'Medicine not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -50,7 +50,7 @@ const deleteMedicine = async (req, res) => {
       res.status(404).json({ success: false, message: 'Medicine not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 

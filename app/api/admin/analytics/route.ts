@@ -47,6 +47,9 @@ export async function GET() {
     return NextResponse.json({ success: true, data: analytics });
   } catch (error: any) {
     console.error("Analytics API Error:", error);
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message
+    }, { status: 500 });
   }
 }

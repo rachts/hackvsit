@@ -14,6 +14,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "No file provided" }, { status: 400 })
     }
 
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "application/pdf"
+    ]
+    if (!allowedMimeTypes.includes(file.type.toLowerCase())) {
+      return NextResponse.json({ success: false, error: "Invalid file type. Only images and PDFs are allowed." }, { status: 400 })
+    }
+
     if (file.size > 10 * 1024 * 1024) {
       return NextResponse.json({ success: false, error: "File too large (max 10MB)" }, { status: 400 })
     }

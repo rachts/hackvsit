@@ -8,7 +8,7 @@ const createRequest = async (req, res) => {
     });
     res.status(201).json({ success: true, message: 'Request created successfully', data: newRequest });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -17,7 +17,7 @@ const getMyRequests = async (req, res) => {
     const requests = await Request.find({ requester: req.user._id });
     res.json({ success: true, message: 'Requests fetched', data: requests });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -26,7 +26,7 @@ const getAllRequests = async (req, res) => {
     const requests = await Request.find({}).populate('requester', 'name email');
     res.json({ success: true, message: 'All requests fetched', data: requests });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 
@@ -41,7 +41,7 @@ const updateRequestStatus = async (req, res) => {
       res.status(404).json({ success: false, message: 'Request not found' });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message });
   }
 };
 

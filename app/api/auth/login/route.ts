@@ -18,6 +18,10 @@ export async function POST(req: NextRequest) {
     await connectMongoose();
     const { email, password } = await req.json();
 
+    if (!email || !password) {
+      return NextResponse.json({ success: false, message: "Please provide email and password" }, { status: 400 });
+    }
+
     const user = await User.findOne({ email });
 
     if (user && (await (user as any).matchPassword(password))) {
@@ -46,7 +50,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Login API Error:", error);
     return NextResponse.json(
-      { success: false, message: error.message },
+      { success: false, message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message },
       { status: 500 }
     );
   }

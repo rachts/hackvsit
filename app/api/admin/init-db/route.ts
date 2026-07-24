@@ -30,6 +30,9 @@ export async function POST() {
     }, { status: 200 });
   } catch (error: any) {
     console.error("Init DB Error:", error);
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      message: process.env.NODE_ENV === "production" ? "Internal server error" : error.message
+    }, { status: 500 });
   }
 }

@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import Providers from "./providers"
 import ClientWrappers from "./_client-wrappers"
-import Navigation from "@/components/navigation"
 import { FirebaseAuthProvider } from "@/components/auth-provider"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/toaster"
@@ -119,10 +118,9 @@ export default function RootLayout({
             <ClientWrappers>
               <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 <FirebaseAuthProvider>
-                <div className="h-16">
-                  <Navigation />
+                <div className="flex min-h-screen flex-col">
+                  <main className="flex-1">{children}</main>
                 </div>
-                <main className="min-h-[calc(100vh-4rem)]">{children}</main>
                 <Toaster />
                 </FirebaseAuthProvider>
               </ThemeProvider>

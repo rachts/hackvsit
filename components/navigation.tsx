@@ -16,7 +16,7 @@ export default function Navigation() {
   const { data: session } = useSession()
   const user = session?.user
 
-  const navItems = ["Donate", "Volunteer", "Store", "Transparency", "Founders"]
+  const navItems = ["Platform", "Impact", "Network", "Resources"]
 
   useEffect(() => {
     setMounted(true)
@@ -59,8 +59,8 @@ export default function Navigation() {
               className="rounded transition-transform duration-300 ease-out group-hover:scale-110"
               priority
             />
-            <span className="text-base font-semibold text-slate-900 dark:text-white transition-colors duration-300">
-              VitaMend
+            <span className="text-xl font-bold text-emerald-700 dark:text-emerald-500 transition-colors duration-300">
+              VITAMEND
             </span>
           </Link>
         </motion.div>
@@ -79,13 +79,13 @@ export default function Navigation() {
                 href={`/${item.toLowerCase()}`}
                 className={`relative text-sm font-medium transition-all duration-300 ease-out link-underline ${
                   isActive(item)
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "text-emerald-700 dark:text-emerald-400"
+                    : "text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400"
                 }`}
               >
                 {item}
                 {isActive(item) && (
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
+                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-full" />
                 )}
               </Link>
             </motion.div>
@@ -120,12 +120,12 @@ export default function Navigation() {
               </button>
             </>
           ) : (
-            <Link
-              href="/auth/signin"
-              className="hidden sm:block rounded-xl px-5 py-2.5 text-sm font-bold text-white transition-all duration-300 shadow-lg shadow-blue-500/25 bg-blue-600 hover:bg-blue-700"
-            >
-              Login
-            </Link>
+              <Link
+                href="/auth/signin"
+                className="hidden sm:block rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 bg-emerald-600 hover:bg-emerald-700"
+              >
+                Get Started
+              </Link>
           )}
 
           {/* Mobile menu button */}

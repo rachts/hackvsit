@@ -111,8 +111,10 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://vercel.live" />
 
         <link rel="preload" href="/logo.png" as="image" type="image/png" />
+        <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 antialiased min-h-screen">
+      <body className="bg-background text-on-surface font-body-md antialiased min-h-screen">
         <ErrorBoundary>
           <Providers>
             <ClientWrappers>

@@ -7,12 +7,27 @@ const donationSchema = new mongoose.Schema({
   brand: { type: String, required: true },
   genericName: { type: String },
   dosage: { type: String, required: true },
-  quantity: { type: Number, required: true },
-  expiryDate: { type: Date, required: true },
+  quantity: { type: Number, required: true, min: [1, 'Quantity must be at least 1'] },
+  expiryDate: { 
+    type: Date, 
+    required: true,
+    validate: {
+      validator: function(v) {
+        return v > new Date();
+      },
+      message: 'Expiry date must be in the future'
+    }
+  },
   condition: { type: String, required: true },
   category: { type: String, required: true },
-  donorName: { type: String, required: true },
-  donorEmail: { type: String, required: true },
+  donorName: { type: String, required: true, trim: true },
+  donorEmail: { 
+    type: String, 
+    required: true, 
+    trim: true,
+    lowercase: true,
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+  },
   donorPhone: { type: String, required: true },
   donorAddress: { type: String, required: true },
   notes: { type: String },

@@ -1,0 +1,434 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>VITAMEND - Medicine for Everyone, Powered by AI.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#3f4943",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#006c49",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface": "#0b1c30",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "tertiary": "#3d4947",
+                      "on-tertiary-container": "#cedbd9",
+                      "background": "#f8f9ff",
+                      "surface-tint": "#006c49",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#6f7a72",
+                      "surface-container-low": "#eff4ff",
+                      "inverse-surface": "#213145",
+                      "secondary-fixed": "#dbe1ff",
+                      "surface-variant": "#d3e4fe",
+                      "on-secondary-container": "#fefcff",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed": "#00174b",
+                      "on-primary-fixed-variant": "#005236",
+                      "secondary-container": "#316bf3",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "error-container": "#ffdad6",
+                      "surface": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#9df4c8",
+                      "tertiary-fixed": "#d7e5e2",
+                      "tertiary-container": "#54615f",
+                      "on-primary-container": "#93eabe",
+                      "on-tertiary-fixed-variant": "#3d4947",
+                      "surface-dim": "#cbdbf5",
+                      "surface-bright": "#f8f9ff",
+                      "on-background": "#0b1c30",
+                      "surface-container": "#e5eeff",
+                      "secondary": "#0051d6",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-tertiary-fixed": "#121e1c",
+                      "tertiary-fixed-dim": "#bcc9c7",
+                      "inverse-on-surface": "#eaf1ff",
+                      "primary": "#005136",
+                      "on-primary-fixed": "#002113",
+                      "inverse-primary": "#81d8ad",
+                      "outline-variant": "#bec9c0",
+                      "primary-fixed-dim": "#81d8ad"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "lg": "48px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "14px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #f8f9ff 0%, #eaf1ff 50%, #f0faf7 100%);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md shadow-sm border-b border-outline-variant/10">
+<div class="flex justify-between items-center h-16 px-gutter max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-md">
+<a class="font-headline-md text-headline-md text-primary font-black tracking-tight" href="#">VITAMEND</a>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all hover:opacity-80 active:opacity-100" href="#">Solutions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all hover:opacity-80 active:opacity-100" href="#">About</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all hover:opacity-80 active:opacity-100" href="#">Impact</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all hover:opacity-80 active:opacity-100" href="#">Resources</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="bg-primary-container text-on-primary rounded-xl px-4 py-2 font-label-md text-label-md hover:shadow-md transition-shadow">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-xl min-h-[90vh] flex items-center hero-gradient overflow-hidden">
+<!-- Decorative Background Elements -->
+<div class="absolute top-20 right-10 w-96 h-96 bg-primary-fixed-dim/30 rounded-full blur-[100px] -z-10 mix-blend-multiply"></div>
+<div class="absolute bottom-20 left-10 w-[500px] h-[500px] bg-secondary-fixed-dim/30 rounded-full blur-[120px] -z-10 mix-blend-multiply"></div>
+<div class="max-w-screen-2xl mx-auto px-gutter grid grid-cols-1 lg:grid-cols-2 gap-lg items-center z-10 w-full">
+<div class="flex flex-col gap-md max-w-2xl">
+<div class="inline-flex items-center gap-2 bg-surface-container-low text-primary px-3 py-1.5 rounded-full w-max border border-primary/20">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-bold">The Future of Medical Logistics</span>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[64px] md:leading-[72px] text-on-surface font-extrabold tracking-tight">
+                    Medicine for Everyone, <br>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Powered by AI.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Vitamend bridges the gap between surplus medical supplies and those in need. Our intelligent platform uses computer vision and predictive routing to ensure no life-saving resource goes to waste.
+                </p>
+<div class="flex flex-col sm:flex-row gap-sm pt-sm">
+<button class="bg-primary-container text-on-primary h-[56px] px-8 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 hover:shadow-md hover:-translate-y-0.5 transition-all w-full sm:w-auto">
+                        Join the Network
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="bg-transparent border border-outline text-on-surface h-[56px] px-8 rounded-xl font-label-md text-label-md flex items-center justify-center hover:bg-surface-container-low transition-colors w-full sm:w-auto">
+                        Watch Demo
+                    </button>
+</div>
+</div>
+<div class="relative h-[500px] lg:h-[600px] w-full rounded-[32px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)] glass-panel border border-white/40 p-4">
+<div class="w-full h-full rounded-[24px] overflow-hidden relative bg-surface-container">
+<img class="object-cover w-full h-full" data-alt="A pristine, highly modern clinical environment bathed in soft, diffused natural light. In the foreground, a sleek robotic arm gracefully handles a transparent vial of clear liquid, illuminated by subtle, high-tech holographic overlays in soft emerald green and cool blue. The background is a slightly blurred, minimalist sterile lab space with clean white surfaces and sophisticated medical equipment. The overall aesthetic is calm, authoritative, and futuristic, representing the pinnacle of automated medical logistics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4Nipio2NxjsgSXH-YetKl6SmEPVMoEF7b5UOpFEbRrccx6IFLNCZbxiy9RDDl8qpTFJ3b7-7lKRwsQUC6rByZiOHKKkEQMYuOQCuL6de0hLnGFfOY9JJynJcHBQPSnL3RWzA4xJCaPZJFVYezG8vlNFvkweNdiYfmYo8UHeX3CTXZ_cRXBM2w_dIp-zxsBaC7u___LtpW3xPee5LchFh2yO_A7TDPVIZwiUrBspIqYzpO-OnFVdWEQeYG0j3hbtCKzBTCv3wgQY0">
+<!-- Floating UI Card overlay -->
+<div class="absolute bottom-6 left-6 right-6 bg-surface/90 backdrop-blur-md rounded-xl p-4 shadow-lg border border-outline-variant/20 flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Optical Verification Complete</p>
+<p class="font-label-md text-label-md text-on-surface font-bold">0 Units Approved for Redistribution</p>
+</div>
+<div class="ml-auto">
+<div class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Stats Section -->
+<section class="py-xl bg-surface-container-lowest border-y border-outline-variant/10">
+<div class="max-w-screen-2xl mx-auto px-gutter">
+<div class="text-center mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Measurable Global Impact</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Real-time data reflecting our commitment to reducing medical waste and improving healthcare access worldwide.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center justify-center text-center shadow-sm border border-outline-variant/20">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="medication">medication</span>
+<h3 class="font-display-lg text-display-lg text-on-surface font-bold mb-1">0</h3>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Medicines Donated</p>
+</div>
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center justify-center text-center shadow-sm border border-outline-variant/20 bg-surface-tint/5">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="favorite">favorite</span>
+<h3 class="font-display-lg text-display-lg text-on-surface font-bold mb-1 text-primary">0</h3>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lives Impacted</p>
+</div>
+<div class="glass-panel p-lg rounded-2xl flex flex-col items-center justify-center text-center shadow-sm border border-outline-variant/20">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="recycling">recycling</span>
+<h3 class="font-display-lg text-display-lg text-on-surface font-bold mb-1">0</h3>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lbs Waste Diverted</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Features Section -->
+<section class="py-xl bg-background">
+<div class="max-w-screen-2xl mx-auto px-gutter">
+<div class="mb-lg max-w-3xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Intelligent Infrastructure for Healthcare</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Our platform leverages cutting-edge artificial intelligence to seamlessly verify, route, and deliver vital medical supplies to where they are needed most.</p>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md auto-rows-[minmax(300px,_auto)]">
+<!-- Feature 1: Neural Optical Verification (Large, spans 8 cols) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-[24px] p-lg shadow-sm border border-outline-variant/10 flex flex-col lg:flex-row gap-lg overflow-hidden relative group">
+<div class="flex-1 z-10 flex flex-col justify-center">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined" data-icon="center_focus_strong">center_focus_strong</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Neural Optical Verification</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Instantly authenticate medications, check expiration dates, and ensure packaging integrity using advanced computer vision models trained on millions of clinical data points.
+                        </p>
+<ul class="space-y-3 mt-auto">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">99.9% Accuracy Rate</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Sub-second Processing</span>
+</li>
+</ul>
+</div>
+<div class="flex-1 relative min-h-[250px] rounded-xl overflow-hidden bg-surface-container border border-outline-variant/20">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up view of a glowing smartphone screen displaying a sophisticated scanning interface. The screen shows an augmented reality view of a medicine bottle, with intricate geometric overlays, scanning lines, and green checkmarks indicating successful verification. The background is a soft, dark slate color, creating a high contrast that highlights the bright, precise UI elements on the phone. The aesthetic is clean, highly technical, and reassuringly precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0GkV6xWF1FhNFoC56W7qWH2VQ7UIEXbjku3ZHG5070STrGNGcbPgszaBpHPvq63S236ulpZBCBFu3dqfDQUgImZ27H18pb5dPkVLaVZ2N8Ts4ggN0trDytxR4OTCTFpqLDq2djKjYIsxexwFKiKmO530ToiYCehyOVKLqBbyv_GCcOVflfBCb4E9mT3p0axt4yzH_AA_XWG4Wme8CN6HlqP30AyDEjlBBFcA4qHBQcWoOXHvkP1F7hg30bKjziSWbTlq-Yh_uj1c">
+</div>
+</div>
+<!-- Feature 2: Smart Redistribution (Spans 4 cols) -->
+<div class="md:col-span-4 bg-[#F0FAF7] rounded-[24px] p-lg shadow-sm border border-primary/10 flex flex-col relative overflow-hidden group">
+<!-- Decorative shape -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px]"></div>
+<div class="w-12 h-12 bg-surface rounded-xl flex items-center justify-center text-primary mb-6 shadow-sm z-10">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 z-10">Smart Redistribution</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 z-10">
+                        Predictive algorithms match available inventory with real-time demand signals from clinics and hospitals, optimizing logistics routes to minimize delivery times and carbon footprint.
+                    </p>
+<div class="mt-auto bg-surface rounded-xl p-4 shadow-sm z-10 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Optimization Score</span>
+<span class="font-label-md text-label-md text-primary">0%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="bg-primary-container h-2 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Feature 3: Real-time Analytics (Spans 6 cols) -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-[24px] p-lg shadow-sm border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-secondary-container/10 rounded-xl flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Real-time Analytics Dashboard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Gain comprehensive visibility into your entire logistics pipeline. Monitor donation flows, track compliance metrics, and generate detailed impact reports instantly.
+                        </p>
+</div>
+<div class="h-40 rounded-xl border border-outline-variant/10 overflow-hidden relative bg-surface-container-low flex items-end p-4">
+<!-- Abstract bar chart representation -->
+<div class="flex gap-2 items-end w-full h-full pt-4">
+<div class="w-1/6 bg-secondary-fixed/50 rounded-t-md h-[40%]"></div>
+<div class="w-1/6 bg-secondary-fixed/70 rounded-t-md h-[60%]"></div>
+<div class="w-1/6 bg-secondary-fixed/40 rounded-t-md h-[30%]"></div>
+<div class="w-1/6 bg-secondary rounded-t-md h-[80%]"></div>
+<div class="w-1/6 bg-secondary-fixed/60 rounded-t-md h-[50%]"></div>
+<div class="w-1/6 bg-secondary-fixed/80 rounded-t-md h-[70%]"></div>
+</div>
+</div>
+</div>
+<!-- Feature 4: Secure Compliance (Spans 6 cols) -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-[24px] p-lg shadow-sm border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-tertiary-container/10 rounded-xl flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Automated Regulatory Compliance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Built-in safeguards ensure all transactions meet FDA and local regulatory standards. Automated documentation trails provide a verifiable chain of custody for every unit.
+                        </p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-4 pb-4 border-b border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt">task_alt</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">HIPAA Compliant</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Data encrypted at rest and in transit</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt">task_alt</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">DSCSA Ready</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Full supply chain traceability</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-xl relative overflow-hidden">
+<div class="absolute inset-0 bg-primary-container -z-20"></div>
+<!-- Decorative subtle pattern overlay -->
+<div class="absolute inset-0 opacity-10 -z-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<div class="max-w-screen-lg mx-auto px-gutter text-center z-10">
+<h2 class="font-display-lg text-display-lg text-on-primary mb-6">Ready to Transform Medical Logistics?</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container max-w-2xl mx-auto mb-10">
+                Join our network of hospitals, clinics, and pharmacies working together to eliminate medical waste and improve patient outcomes.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-surface text-primary-container h-[56px] px-8 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 hover:shadow-lg hover:bg-surface-bright transition-all">
+                    Join the Network Now
+                </button>
+<button class="bg-transparent border border-outline text-on-primary h-[56px] px-8 rounded-xl font-label-md text-label-md flex items-center justify-center hover:bg-on-primary/10 transition-colors">
+                    Contact Sales
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 bg-surface-container-low grid grid-cols-1 md:grid-cols-4 gap-8 px-gutter max-w-screen-2xl mx-auto border-t border-outline-variant/20">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-4">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">VITAMEND</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Medical Logistics</p>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col md:flex-row justify-end items-start md:items-center gap-6">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100" href="#">Compliance</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-colors opacity-90 hover:opacity-100" href="#">Contact Support</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-8 pt-8 border-t border-outline-variant/10">
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center">© 2024 VITAMEND Medical Logistics. All rights reserved.</p>
+</div>
+</footer>
+
+
+</body></html>

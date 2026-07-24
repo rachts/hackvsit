@@ -1,3 +1,5 @@
+import { logger } from "@/lib/logger"
+
 interface QueueJob {
   id: string
   type: string
@@ -7,6 +9,8 @@ interface QueueJob {
   createdAt: Date
   processAt: Date
 }
+
+type TaskPriority = "high" | "normal" | "low"
 
 class SimpleQueue {
   private jobs: Map<string, QueueJob> = new Map()
@@ -73,10 +77,10 @@ export const queue = new SimpleQueue()
 // Register processors
 queue.registerProcessor("send-email", async (data) => {
   // Email sending logic
-  console.log("Sending email:", data)
+  logger.info("Sending email:", data)
 })
 
 queue.registerProcessor("verify-medicine", async (data) => {
   // Medicine verification logic
-  console.log("Verifying medicine:", data)
+  logger.info("Verifying medicine:", data)
 })

@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>VITAMEND Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#3f4943",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#006c49",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface": "#0b1c30",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "tertiary": "#3d4947",
+                      "on-tertiary-container": "#cedbd9",
+                      "background": "#f8f9ff",
+                      "surface-tint": "#006c49",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#6f7a72",
+                      "surface-container-low": "#eff4ff",
+                      "inverse-surface": "#213145",
+                      "secondary-fixed": "#dbe1ff",
+                      "surface-variant": "#d3e4fe",
+                      "on-secondary-container": "#fefcff",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed": "#00174b",
+                      "on-primary-fixed-variant": "#005236",
+                      "secondary-container": "#316bf3",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "error-container": "#ffdad6",
+                      "surface": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#9df4c8",
+                      "tertiary-fixed": "#d7e5e2",
+                      "tertiary-container": "#54615f",
+                      "on-primary-container": "#93eabe",
+                      "on-tertiary-fixed-variant": "#3d4947",
+                      "surface-dim": "#cbdbf5",
+                      "surface-bright": "#f8f9ff",
+                      "on-background": "#0b1c30",
+                      "surface-container": "#e5eeff",
+                      "secondary": "#0051d6",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-tertiary-fixed": "#121e1c",
+                      "tertiary-fixed-dim": "#bcc9c7",
+                      "inverse-on-surface": "#eaf1ff",
+                      "primary": "#005136",
+                      "on-primary-fixed": "#002113",
+                      "inverse-primary": "#81d8ad",
+                      "outline-variant": "#bec9c0",
+                      "primary-fixed-dim": "#81d8ad"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "lg": "48px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "14px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-card {
+            @apply bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10 p-gutter flex flex-col;
+        }
+        .glass-overlay {
+            @apply bg-surface/80 backdrop-blur-md;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex">
+<!-- SideNavBar (From JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface/80 backdrop-blur-xl border-r border-outline-variant/20 shadow-md flex flex-col h-full py-6 z-40 hidden md:flex">
+<!-- Brand Header -->
+<div class="px-gutter mb-xl">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">VITAMEND</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Medical Logistics</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-sm space-y-xs">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-primary font-bold border-r-4 border-primary bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/20 transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/20 transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md text-label-md">Donations</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/20 transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-label-md text-label-md">Verification</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/20 transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/20 transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- User Profile Area -->
+<div class="px-gutter mt-auto pt-md border-t border-outline-variant/20">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" data-alt="A professional headshot of a modern corporate professional in a brightly lit, high-tech clinical environment. The lighting is soft and white, highlighting a sense of calm authority and reliability. The background features subtle glassmorphism elements and blurred medical data interfaces in cool blue and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_beiabKITfgw2Imz2QLRNEetToYWBPBirWdq0648RNONS6IdbE6RkwaSKsFnIUl1kp5GKqy7wLfQ19nRv5S0VvRWXJze1qqfw86jFXVdvgjBJ-jqBXRl5_a3UbSsQD-fqd9XUVCLOPgNdy-8NAps1SdJpSSpD6YRieCPzCuzfL6FR94t8U3JLXNNBoC4HMJfA1rPGzpX0yF1B_rOBmruyagJSc2shtPBeOU7H0_5tFYoU7lI31K1H-71AC-dLIhTH0uwCTYVxjd8">
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md text-on-surface truncate">Rachit Kumar Tiwari</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Donor Tier: Platinum</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background min-h-screen">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:justify-between md:items-end gap-md mb-xl">
+<div>
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase mb-xs">Overview</p>
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface">Welcome back, Rachit</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-xs max-w-2xl">Your contributions are currently tracking across 3 active delivery zones. System networks are optimal.</p>
+</div>
+<div class="flex items-center gap-sm">
+<button class="relative p-sm rounded-full bg-surface-container-lowest border border-outline-variant/20 shadow-sm text-on-surface hover:text-primary hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<button class="flex items-center gap-base px-md py-sm bg-primary-container text-on-primary rounded-xl font-label-md text-label-md shadow-sm hover:shadow-md transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                    New Request
+                </button>
+</div>
+</header>
+<!-- Bento Grid: Metrics -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-xl">
+<!-- Impact Metric -->
+<div class="bento-card md:col-span-4 bg-gradient-to-br from-surface-container-lowest to-surface-container-low relative overflow-hidden">
+<div class="absolute -right-10 -top-10 opacity-5 text-primary">
+<span class="material-symbols-outlined text-[150px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="flex items-center justify-between mb-auto">
+<div class="p-sm bg-primary-container/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">vital_signs</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-xs bg-primary-container/10 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% this month
+                    </span>
+</div>
+<div class="mt-md">
+<h3 class="font-display-lg text-display-lg text-on-surface">0</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Lives Impacted</p>
+</div>
+</div>
+<!-- AI Insight Widget -->
+<div class="bento-card md:col-span-5 bg-surface-container-lowest border-l-4 border-l-secondary-container">
+<div class="flex items-start gap-md mb-sm">
+<div class="p-sm bg-secondary-container/10 rounded-lg text-secondary-container">
+<span class="material-symbols-outlined">neurology</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">AI Supply Insight</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Predictive model indicates a localized shortage based on recent trauma admissions.</p>
+</div>
+</div>
+<div class="mt-auto bg-surface-container p-sm rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-error">warning</span>
+<span class="font-label-md text-label-md text-on-surface">Urgent Demand: O- Blood</span>
+</div>
+<button class="font-label-sm text-label-sm text-secondary hover:underline">View Logistics</button>
+</div>
+</div>
+<!-- Active Connections -->
+<div class="bento-card md:col-span-3 bg-surface-container-lowest">
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-md text-label-md text-on-surface-variant">Active Nodes</span>
+<span class="material-symbols-outlined text-on-surface-variant">hub</span>
+</div>
+<div class="flex-1 flex flex-col justify-center items-center">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="48" cy="48" fill="transparent" r="44" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-secondary-container" cx="48" cy="48" fill="transparent" r="44" stroke="currentColor" stroke-dasharray="276" stroke-dashoffset="276" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-headline-md text-headline-md text-on-surface">0</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">Clinics Connected</p>
+</div>
+</div>
+</section>
+<!-- Two Column Operations Area -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Operations -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- Your Donations List -->
+<div class="bento-card">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Your Recent Donations</h3>
+<button class="font-label-sm text-label-sm text-primary hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/20">
+<th class="py-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Consignment ID</th>
+<th class="py-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Type</th>
+<th class="py-sm font-label-sm text-label-sm text-on-surface-variant font-medium">Date</th>
+<th class="py-sm font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10"><tr><td colspan="4" class="py-md text-center font-body-sm text-on-surface-variant">No recent donations found.</td></tr></tbody>
+</table>
+</div>
+</div>
+<!-- High-Tech Map UI -->
+<div class="bento-card p-0 overflow-hidden relative min-h-[300px]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A highly detailed, futuristic digital map interface displayed on a medical dashboard. The map uses a sleek, light-mode corporate palette with soft greys, white surfaces, and glowing emerald green and royal blue nodes indicating delivery zones. The aesthetic is clean, precise, and technologically advanced, with subtle grid lines and data overlays." data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBclT0XQ8h1cgzJ2v0HeKPminXtZ79AMOl32w1oXvsQYFSsAeIQQ-AORUy1m_elMgkismU9BHnl0Iyx_mxI5a6GHQINfVPH8Vz8yPiU-R44GLh5eOMqv67Ki4Ra12gDhTjk3Joh-ywwj4d1ZZsF6mZKCpdPIzcHgm9cn84L0eIqa14GHf3NDCad82BSR3W0QSjsvoyNgzul6WZ_HzqBpiNrW9hzuR8JMNqsXvZq21ry2ayJ5W9siwzyFgCkm-WtINC2QjJPZCGu4Fk')"></div>
+<!-- Map Overlay UI -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface/90 via-surface/20 to-transparent flex flex-col justify-between p-md">
+<div class="flex justify-between items-start">
+<div class="glass-overlay p-sm rounded-lg border border-white/20 shadow-sm inline-block">
+<h4 class="font-label-md text-label-md text-on-surface">Nearby Delivery Zones</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span> 3 Active Routes
+                                </p>
+</div>
+<button class="glass-overlay p-sm rounded-full border border-white/20 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+<!-- Floating Node Info -->
+<div class="glass-overlay p-sm rounded-xl border border-white/20 shadow-lg self-start max-w-sm flex items-center gap-sm">
+<div class="p-xs bg-primary-container text-on-primary rounded-lg">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Route Alpha - En Route</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ETA: 14 mins to Bay General</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Feed & Transparency -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Transparency Widget -->
+<div class="bento-card bg-inverse-surface text-on-primary">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary-fixed">security</span>
+<h3 class="font-label-md text-label-md text-on-primary">Chain of Custody</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-primary/70 mb-sm">Latest verified transaction block hash ensuring tamper-proof delivery records.</p>
+<div class="bg-black/30 p-sm rounded-lg font-mono text-xs text-primary-fixed break-all border border-primary-fixed/20">
+                        0x7a8f9c2d1b4e6a5f3c8d7e9b0a1f2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b
+                    </div>
+<div class="mt-md flex justify-between items-center border-t border-white/10 pt-sm">
+<span class="font-label-sm text-label-sm text-on-primary/50">Verified by Vitamend Network</span>
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">check_circle</span>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="bento-card flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Activity Feed</h3>
+<div class="relative border-l-2 border-surface-container-high ml-sm space-y-lg pb-md"><div class="relative pl-md"><p class="font-body-sm text-on-surface-variant">Your activity will appear here once you start using Vitamend.</p></div></div>
+
+</div>
+</div>
+</section>
+</main>
+
+
+</body></html>

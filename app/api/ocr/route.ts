@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
+const limiter = rateLimit(10, 1);
 export async function POST(req: NextRequest) {
+  const rateLimitResult = limiter(req as any);
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -19,14 +27,14 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("FastAPI OCR Error:", errorText);
+      logger.error("FastAPI OCR Error:", errorText);
       return NextResponse.json({ error: "OCR processing failed on backend" }, { status: response.status });
     }
 
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("OCR Proxy Error:", error);
+    logger.error("OCR Proxy Error:", error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import connectMongoose from "@/lib/db/mongoose";
 import Medicine from "@/backend/models/Medicine";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ success: false, message: "Not authorized" }, { status: 401 });
+    }
+
     await connectMongoose();
     const medicines = await Medicine.find({ status: "approved" }).populate("donor", "name email");
     return NextResponse.json({ success: true, message: "Medicines fetched", data: medicines });

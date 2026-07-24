@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import connectMongoose from "@/lib/db/mongoose";
 import User from "@/backend/models/User";
 import jwt from "jsonwebtoken";
+import { rateLimit } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
+
+const limiter = rateLimit(20, 2); // 20 requests capacity, refill 2 per min/sec? Let's check rate-limit.ts. It's tokens per second? "timePassed / 1000 * refillRate". Yes, 2 per second.
 
 const generateToken = (id: string) => {
   const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
@@ -14,6 +18,11 @@ const generateToken = (id: string) => {
 };
 
 export async function POST(req: NextRequest) {
+  const rateLimitResult = limiter(req as any);
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json({ success: false, message: "Too many requests" }, { status: 429 });
+  }
+
   try {
     await connectMongoose();
     const { name, email, password, role, phone, address } = await req.json();
@@ -56,8 +65,8 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error: any) {
-    console.error("Register API Error Details:", JSON.stringify(error, null, 2));
-    console.error("Register API Error Message:", error.message);
+    logger.error("Register API Error Details:", JSON.stringify(error, null, 2));
+    logger.error("Register API Error Message:", error.message);
     
     // Improve error message for pattern failures
     let errorMessage = error.message;

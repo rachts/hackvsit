@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import connectMongoose from "@/lib/db/mongoose";
 import Donation from "@/backend/models/Donation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 // Since Donation form has its own fields, we might need a dedicated model or just use existing.
 // Let's assume the backend model matches or we adapt.
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     await connectMongoose();
     
@@ -41,6 +49,11 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
     await connectMongoose();
     const donations = await Donation.find({}).sort({ createdAt: -1 });
     return NextResponse.json({ success: true, data: donations });

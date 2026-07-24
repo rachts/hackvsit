@@ -397,4 +397,25 @@
   .empty-state-desc {
     @apply text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6;
   }
+
+  /* Stitch Custom Utilities */
+  .glass-panel {
+    @apply bg-surface/80 backdrop-blur-xl border border-outline-variant/20 shadow-sm;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .soft-mint-bg {
+    background-color: #F0FAF7;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, #f8f9ff 0%, #eaf1ff 50%, #f0faf7 100%);
+  }
 }

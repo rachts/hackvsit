@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import Tesseract from "tesseract.js";
+import { logger } from "@/lib/logger";
 import { OCRCheckResponse } from "./ocr-service";
 
 /**
@@ -32,7 +33,7 @@ export async function processImageWithNodeOCR(fileBuffer: Buffer): Promise<OCRCh
     preprocessedBuffer,
     "eng",
     {
-      logger: m => console.log(m) // Optional: remove in production or keep for debugging
+      logger: m => logger.debug(m)
     }
   );
 

@@ -6,21 +6,17 @@ import { usePathname } from "next/navigation"
 import { Menu, Heart, ShoppingCart, User, Home, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { useCart } from "@/components/shop/cart-provider"
 import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
   { name: "About", href: "/about", icon: Info },
   { name: "Donate", href: "/donate", icon: Heart },
-  { name: "Volunteer", href: "/volunteer", icon: User },
-  { name: "Shop", href: "/shop", icon: ShoppingCart },
 ]
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const { state: { itemCount: totalItems } } = useCart()
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -61,11 +57,6 @@ export function MobileNav() {
               >
                 <item.icon className="mr-2 h-4 w-4" />
                 {item.name}
-                {item.name === "Shop" && totalItems > 0 && (
-                  <span className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                    {totalItems}
-                  </span>
-                )}
               </Link>
             ))}
           </div>

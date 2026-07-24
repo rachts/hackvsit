@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import connectMongoose from "@/lib/db/mongoose";
 import User from "@/backend/models/User";
 import jwt from "jsonwebtoken";
+import { rateLimit } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
+
+const limiter = rateLimit(20, 2);
 
 const generateToken = (id: string) => {
   const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
@@ -14,6 +18,11 @@ const generateToken = (id: string) => {
 };
 
 export async function POST(req: NextRequest) {
+  const rateLimitResult = limiter(req as any);
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json({ success: false, message: "Too many requests" }, { status: 429 });
+  }
+
   try {
     await connectMongoose();
     const { email, password } = await req.json();
@@ -44,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error: any) {
-    console.error("Login API Error:", error);
+    logger.error("Login API Error:", error.message);
     return NextResponse.json(
       { success: false, message: error.message },
       { status: 500 }

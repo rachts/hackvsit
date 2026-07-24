@@ -1,26 +1,5 @@
 "use client"
 import * as React from "react"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import {
-  LayoutDashboard,
-  Package,
-  HeartHandshake,
-  ShieldCheck,
-  BarChart3,
-  PlusCircle,
-  Settings,
-  HelpCircle
-} from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -28,97 +7,122 @@ const mainNavItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: LayoutDashboard,
+    icon: "dashboard",
   },
   {
     title: "Inventory",
     url: "/inventory",
-    icon: Package,
+    icon: "inventory_2",
   },
   {
     title: "Donations",
     url: "/donations",
-    icon: HeartHandshake,
+    icon: "volunteer_activism",
   },
   {
     title: "Verification",
     url: "/verification",
-    icon: ShieldCheck,
+    icon: "verified",
   },
   {
     title: "Analytics",
     url: "/analytics",
-    icon: BarChart3,
-  },
-]
-
-const bottomNavItems = [
-  {
-    title: "New Donation",
-    url: "/donate",
-    icon: PlusCircle,
-    isPrimary: true,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
-  {
-    title: "Support",
-    url: "/contact",
-    icon: HelpCircle,
+    icon: "analytics",
   },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
 
   return (
-    <Sidebar className="bg-slate-50/50 border-r border-slate-200">
-      <SidebarHeader className="px-6 py-6 mb-4">
-        <div className="flex flex-col">
-          <span className="text-xl font-bold text-emerald-700 tracking-tight">VITAMEND</span>
-          <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-widest mt-1">AI Medical Logistics</span>
-        </div>
-      </SidebarHeader>
-      
-      <SidebarContent className="px-3">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
-              {mainNavItems.map((item) => {
-                const isActive = pathname.startsWith(item.url)
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={isActive} className={`w-full py-6 rounded-xl transition-all duration-200 ${isActive ? "bg-blue-50 text-blue-700 font-semibold shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"}`}>
-                      <Link href={item.url} className="flex items-center gap-4">
-                        <item.icon className={`h-[18px] w-[18px] ${isActive ? "text-blue-600" : "text-slate-400"}`} />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+    <>
+      <nav className="md:hidden fixed top-0 w-full z-50 bg-surface/70 dark:bg-inverse-surface/70 backdrop-blur-md border-b border-outline-variant/10 shadow-sm flex justify-between items-center h-16 px-gutter">
+        <Link href="/" className="font-headline-md text-headline-md text-primary font-black">
+          VITAMEND
+        </Link>
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="text-on-surface-variant p-2"
+        >
+          <span className="material-symbols-outlined">{mobileMenuOpen ? "close" : "menu"}</span>
+        </button>
+      </nav>
 
-      <SidebarFooter className="px-3 pb-6 mt-auto">
-        <SidebarMenu className="gap-1">
-          {bottomNavItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild className={`w-full py-6 rounded-xl transition-all duration-200 ${item.isPrimary ? "bg-emerald-700 text-white hover:bg-emerald-800 hover:text-white mb-4 shadow-md" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"}`}>
-                <Link href={item.url} className="flex items-center gap-4">
-                  <item.icon className={`h-[18px] w-[18px] ${item.isPrimary ? "text-white" : "text-slate-400"}`} />
-                  <span className={item.isPrimary ? "font-semibold" : ""}>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed top-16 left-0 w-full bg-surface dark:bg-inverse-surface border-b border-outline-variant/10 z-40 flex flex-col p-4 gap-2 shadow-lg">
+          {mainNavItems.map((item) => {
+            const isActive = pathname.startsWith(item.url)
+            return (
+              <Link
+                key={item.title}
+                href={item.url}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-body-md text-body-md ${
+                  isActive
+                    ? "text-primary font-bold border-l-4 border-primary bg-primary-container/10"
+                    : "text-on-surface-variant hover:text-primary hover:bg-primary-container/10"
+                }`}
+              >
+                <span className="material-symbols-outlined" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
+                  {item.icon}
+                </span>
+                {item.title}
+              </Link>
+            )
+          })}
+          <Link
+            href="/settings"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary-container/10 transition-all font-body-md text-body-md mt-4 border-t border-outline-variant/10"
+          >
+            <span className="material-symbols-outlined">settings</span>
+            Settings
+          </Link>
+        </div>
+      )}
+
+      <aside className="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl border-r border-outline-variant/20 shadow-md flex-col py-6 z-40">
+        <div className="px-6 mb-8">
+          <Link href="/" className="block font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold">
+            VITAMEND
+          </Link>
+          <div className="font-body-sm text-body-sm text-on-surface-variant">Medical Logistics</div>
+        </div>
+        <div className="flex flex-col gap-1 px-4 flex-1">
+          {mainNavItems.map((item) => {
+            const isActive = pathname.startsWith(item.url)
+            return (
+              <Link
+                key={item.title}
+                href={item.url}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-transform scale-95 active:scale-90 font-body-md text-body-md ${
+                  isActive
+                    ? "text-primary font-bold border-r-4 border-primary bg-primary-container/10"
+                    : "text-on-surface-variant hover:text-primary hover:bg-primary-container/20"
+                }`}
+              >
+                <span className="material-symbols-outlined" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
+                  {item.icon}
+                </span>
+                {item.title}
+              </Link>
+            )
+          })}
+          
+          <Link
+            href="/settings"
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-transform scale-95 active:scale-90 font-body-md text-body-md mt-auto ${
+              pathname.startsWith("/settings")
+                ? "text-primary font-bold border-r-4 border-primary bg-primary-container/10"
+                : "text-on-surface-variant hover:text-primary hover:bg-primary-container/20"
+            }`}
+          >
+            <span className="material-symbols-outlined">settings</span>
+            Settings
+          </Link>
+        </div>
+      </aside>
+    </>
   )
 }

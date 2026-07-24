@@ -1,14 +1,9 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState, useRef } from "react"
 import { useToast } from "@/components/ui/use-toast"
-import { Loader2, Upload, X, Check, Image as ImageIcon } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { OCRService } from "@/lib/ai/ocr-service"
 
 export default function DonationForm() {
@@ -17,6 +12,8 @@ export default function DonationForm() {
   const [isProcessingOCR, setIsProcessingOCR] = useState(false)
   const [images, setImages] = useState<File[]>([])
   const { toast } = useToast()
+  
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [formData, setFormData] = useState({
     medicineName: "",
@@ -33,10 +30,6 @@ export default function DonationForm() {
     donorAddress: "",
     notes: "",
   })
-
-  useEffect(() => {
-    // DB no longer needed on client
-  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -61,6 +54,32 @@ export default function DonationForm() {
     }
   }
 
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
+    
+    if (files.length + images.length > 5) {
+      toast({
+        title: "Too many images",
+        description: "You can upload a maximum of 5 images",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setImages((prev) => [...prev, ...files])
+
+    if (files.length > 0 && !formData.medicineName) {
+      await processImageWithOCR(files[0])
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
   const processImageWithOCR = async (file: File) => {
     setIsProcessingOCR(true)
 
@@ -72,7 +91,6 @@ export default function DonationForm() {
 
       const result = await OCRService.processImage(file)
 
-      // Auto-fill medicine name if found
       if (result.medicine_name && !formData.medicineName) {
         setFormData((prev) => ({ 
           ...prev, 
@@ -85,7 +103,6 @@ export default function DonationForm() {
         })
       }
 
-      // Auto-fill expiry date if found
       if (result.expiry && !formData.expiryDate) {
         setFormData((prev) => ({ ...prev, expiryDate: result.expiry as string }))
         toast({
@@ -94,7 +111,6 @@ export default function DonationForm() {
         })
       }
 
-      // Auto-fill batch if available
       if (result.batch) {
         setFormData((prev) => ({ 
           ...prev, 
@@ -102,7 +118,6 @@ export default function DonationForm() {
         }))
       }
 
-      // Handle validation results
       if (result.tampered) {
         toast({
           title: "Security Warning",
@@ -161,7 +176,7 @@ export default function DonationForm() {
           brand: formData.brand,
           genericName: formData.genericName || undefined,
           dosage: formData.dosage,
-          quantity: Number.parseInt(formData.quantity),
+          quantity: Number.parseInt(formData.quantity) || 1,
           expiryDate: formData.expiryDate,
           condition: formData.condition,
           category: formData.category,
@@ -179,7 +194,6 @@ export default function DonationForm() {
           title: "Donation Submitted!",
           description: result.message,
         })
-        // Reset form
         setFormData({
           medicineName: "", brand: "", genericName: "", dosage: "", quantity: "",
           expiryDate: "", condition: "unopened", category: "tablet",
@@ -202,78 +216,101 @@ export default function DonationForm() {
   }
 
   return (
-    <Card className="w-full border-slate-200 shadow-lg rounded-2xl overflow-hidden bg-white">
-      {/* Stepper Header */}
-      <div className="bg-slate-50 border-b border-slate-200 p-6 flex items-center justify-between">
-        {[
-          { num: 1, label: "Medicine Details" },
-          { num: 2, label: "Donor Information" },
-          { num: 3, label: "Review" }
-        ].map((step, idx) => (
-          <div key={step.num} className="flex items-center">
-            <div className={`flex items-center justify-center h-8 w-8 rounded-full font-semibold text-sm ${currentStep >= step.num ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
-              {currentStep > step.num ? <Check className="h-4 w-4" /> : step.num}
-            </div>
-            <span className={`ml-3 text-sm font-medium hidden sm:block ${currentStep >= step.num ? 'text-slate-900' : 'text-slate-500'}`}>
-              {step.label}
-            </span>
-            {idx < 2 && (
-              <div className={`h-[2px] w-12 sm:w-24 mx-4 ${currentStep > step.num ? 'bg-emerald-600' : 'bg-slate-200'}`}></div>
-            )}
+    <>
+      {/* Progress Indicator */}
+      <div className="flex items-center justify-center gap-4 max-w-lg mx-auto relative mb-12">
+        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-surface-variant -z-10 -translate-y-1/2"></div>
+        <div 
+          className="absolute top-1/2 left-0 h-[2px] bg-primary -z-10 -translate-y-1/2 transition-all duration-300"
+          style={{ width: currentStep === 1 ? '33%' : currentStep === 2 ? '66%' : '100%' }}
+        ></div>
+        
+        <div className="flex flex-col items-center gap-2 bg-background px-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-label-md ring-4 ring-background shadow-md transition-colors ${currentStep >= 1 ? 'bg-primary text-on-primary' : 'bg-surface-variant text-on-surface-variant'}`}>
+            <span className="material-symbols-outlined text-sm">photo_camera</span>
           </div>
-        ))}
+          <span className={`font-label-sm text-label-sm ${currentStep >= 1 ? 'text-primary' : 'text-on-surface-variant'}`}>Capture</span>
+        </div>
+        
+        <div className="flex flex-col items-center gap-2 bg-background px-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-label-md ring-4 ring-background shadow-md transition-colors ${currentStep >= 2 ? 'bg-primary text-on-primary' : 'bg-surface-variant text-on-surface-variant'}`}>
+            <span className="material-symbols-outlined text-sm">person</span>
+          </div>
+          <span className={`font-label-sm text-label-sm ${currentStep >= 2 ? 'text-primary' : 'text-on-surface-variant'}`}>Details</span>
+        </div>
+        
+        <div className="flex flex-col items-center gap-2 bg-background px-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-label-md ring-4 ring-background shadow-md transition-colors ${currentStep >= 3 ? 'bg-primary text-on-primary' : 'bg-surface-variant text-on-surface-variant'}`}>
+            <span className="material-symbols-outlined text-sm">done_all</span>
+          </div>
+          <span className={`font-label-sm text-label-sm ${currentStep >= 3 ? 'text-primary' : 'text-on-surface-variant'}`}>Review</span>
+        </div>
       </div>
 
-      <CardContent className="p-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          
+      <div className="bg-[#F0FAF7] rounded-[24px] p-sm lg:p-md shadow-sm">
+        <form onSubmit={handleSubmit}>
           {currentStep === 1 && (
-            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {/* Image Upload Box */}
-              <div className="border-2 border-dashed border-emerald-200 bg-emerald-50/50 rounded-xl p-8 text-center transition-colors hover:bg-emerald-50">
-                <div className="mx-auto h-12 w-12 bg-emerald-100 rounded-full flex items-center justify-center mb-4 text-emerald-600">
-                  <ImageIcon className="h-6 w-6" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-md animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {/* Left: Capture / Upload */}
+              <div className="glass-panel rounded-[24px] p-md flex flex-col min-h-[500px]">
+                <div>
+                  <h2 className="font-headline-md text-headline-md text-primary mb-2">Capture Packaging</h2>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mb-6">
+                    Upload clear photos of the medicine box showing name, dosage, and expiry date. Our AI will automatically extract the details.
+                  </p>
                 </div>
-                <h3 className="text-lg font-medium text-slate-900 mb-1">Upload Medicine Photos</h3>
-                <p className="text-sm text-slate-500 mb-4">Our AI will automatically extract the details from clear photos.</p>
                 
-                <input
-                  id="images"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="hidden"
-                  disabled={isProcessingOCR}
-                />
-                <Button
-                  type="button"
-                  onClick={() => document.getElementById("images")?.click()}
-                  disabled={isProcessingOCR}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-6"
+                <div 
+                  className="flex-grow border-2 border-dashed border-outline-variant rounded-[16px] flex flex-col items-center justify-center p-6 text-center cursor-pointer hover:bg-surface transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
                 >
                   {isProcessingOCR ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Processing...</>
+                    <>
+                      <Loader2 className="h-[48px] w-[48px] text-primary mb-4 opacity-70 animate-spin" />
+                      <p className="font-label-md text-label-md text-on-surface mb-1">AI analyzing images...</p>
+                    </>
                   ) : (
-                    <><Upload className="mr-2 h-4 w-4" />Upload Photos</>
+                    <>
+                      <span className="material-symbols-outlined text-[48px] text-primary mb-4 opacity-70">
+                        {images.length > 0 ? 'check_circle' : 'add_a_photo'}
+                      </span>
+                      <p className="font-label-md text-label-md text-on-surface mb-1">
+                        {images.length > 0 ? 'Files loaded ready for AI analysis' : 'Drag & Drop images here'}
+                      </p>
+                      <p className="font-body-sm text-body-sm text-on-surface-variant mb-4">or click to browse from your device</p>
+                      <button type="button" className="px-4 py-2 border border-primary text-primary rounded-[16px] font-label-sm text-label-sm hover:bg-primary-container/10 transition-colors pointer-events-none">
+                        Select Files
+                      </button>
+                    </>
                   )}
-                </Button>
+                  <input 
+                    ref={fileInputRef}
+                    accept="image/*" 
+                    className="hidden" 
+                    multiple 
+                    type="file" 
+                    onChange={handleImageUpload}
+                  />
+                </div>
 
+                {/* Preview Area */}
                 {images.length > 0 && (
-                  <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {images.map((image, index) => (
-                      <div key={index} className="relative group rounded-lg overflow-hidden border border-emerald-200 shadow-sm">
-                        <img
-                          src={URL.createObjectURL(image) || "/placeholder.svg"}
-                          alt={`Medicine ${index + 1}`}
-                          className="h-24 w-full object-cover"
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    {images.map((img, idx) => (
+                      <div key={idx} className="relative rounded-lg overflow-hidden h-24 bg-surface-variant border border-outline-variant/30">
+                        <img 
+                          className="w-full h-full object-cover" 
+                          src={URL.createObjectURL(img)}
+                          alt="preview"
                         />
-                        <button
-                          type="button"
-                          className="absolute top-1 right-1 h-6 w-6 bg-white/90 text-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => removeImage(index)}
+                        <button 
+                          type="button" 
+                          onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
+                          className="absolute top-1 right-1 bg-error/90 text-on-error rounded-full p-1 hover:bg-error transition-colors"
                         >
-                          <X className="h-4 w-4" />
+                          <span className="material-symbols-outlined text-[16px]">close</span>
                         </button>
                       </div>
                     ))}
@@ -281,111 +318,198 @@ export default function DonationForm() {
                 )}
               </div>
 
-              {/* Form Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="medicineName">Medicine Name <span className="text-red-500">*</span></Label>
-                  <Input id="medicineName" name="medicineName" value={formData.medicineName} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
+              {/* Right: Specifications Form */}
+              <div className="glass-panel rounded-[24px] p-md flex flex-col">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="font-headline-md text-headline-md text-primary">Medicine Specifications</h2>
+                  <span className="bg-primary-container/20 text-primary font-label-sm px-3 py-1 rounded-full flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+                    AI Assisted
+                  </span>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="brand">Brand / Manufacturer <span className="text-red-500">*</span></Label>
-                  <Input id="brand" name="brand" value={formData.brand} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
+                
+                <div className="space-y-4 flex-grow">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Medicine Name *</label>
+                      <input name="medicineName" value={formData.medicineName} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="Enter name" type="text" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Brand (Optional)</label>
+                      <input name="brand" value={formData.brand} onChange={handleInputChange} className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="e.g. Tylenol" type="text" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Dosage / Strength</label>
+                      <input name="dosage" value={formData.dosage} onChange={handleInputChange} className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="e.g. 500mg" type="text" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Quantity *</label>
+                      <input name="quantity" value={formData.quantity} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="e.g. 1" type="number" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Expiry Date *</label>
+                      <input name="expiryDate" value={formData.expiryDate} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" type="month" />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Category</label>
+                      <select name="category" value={formData.category} onChange={handleInputChange} className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md">
+                        <option value="antibiotic">Antibiotic</option>
+                        <option value="pain_relief">Pain Relief</option>
+                        <option value="cardiovascular">Cardiovascular</option>
+                        <option value="tablet">Tablet / Pill</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Condition *</label>
+                    <div className="flex gap-4 mt-2">
+                      <label className={`flex items-center gap-2 cursor-pointer p-3 rounded-[12px] border hover:bg-surface-variant transition-colors flex-1 ${formData.condition === 'unopened' ? 'border-primary bg-primary-container/5' : 'border-outline-variant'}`}>
+                        <input name="condition" value="unopened" checked={formData.condition === 'unopened'} onChange={handleInputChange} className="text-primary focus:ring-primary h-5 w-5" type="radio" />
+                        <span className="font-body-sm">Sealed</span>
+                      </label>
+                      <label className={`flex items-center gap-2 cursor-pointer p-3 rounded-[12px] border hover:bg-surface-variant transition-colors flex-1 ${formData.condition === 'opened' ? 'border-primary bg-primary-container/5' : 'border-outline-variant'}`}>
+                        <input name="condition" value="opened" checked={formData.condition === 'opened'} onChange={handleInputChange} className="text-primary focus:ring-primary h-5 w-5" type="radio" />
+                        <span className="font-body-sm">Opened</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="quantity">Quantity <span className="text-red-500">*</span></Label>
-                  <Input id="quantity" name="quantity" type="number" value={formData.quantity} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="expiryDate">Expiry Date <span className="text-red-500">*</span></Label>
-                  <Input id="expiryDate" name="expiryDate" type="date" value={formData.expiryDate} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="condition">Condition <span className="text-red-500">*</span></Label>
-                  <select id="condition" name="condition" value={formData.condition} onChange={handleInputChange} required className="w-full h-10 px-3 rounded-md border border-slate-200 bg-slate-50 focus:bg-white outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-                    <option value="unopened">Unopened / Sealed</option>
-                    <option value="opened">Opened (Unused)</option>
-                    <option value="partial">Partially Used</option>
-                  </select>
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="notes">Additional Notes</Label>
-                  <Textarea id="notes" name="notes" value={formData.notes} onChange={handleInputChange} placeholder="e.g. Needs refrigeration" className="bg-slate-50 border-slate-200 focus:bg-white min-h-[100px]" />
-                </div>
-              </div>
 
-              <div className="flex justify-end pt-4">
-                <Button type="button" onClick={nextStep} className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 rounded-full">
-                  Next Step
-                </Button>
+                <div className="pt-6 flex justify-end gap-4 border-t border-outline-variant/20 mt-8">
+                  <button type="button" className="px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+                    Save Draft
+                  </button>
+                  <button type="button" onClick={nextStep} className="bg-primary-container text-on-primary font-label-md text-label-md px-8 py-3 rounded-[16px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-2">
+                    Proceed to Donor Details
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
           {currentStep === 2 && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="donorName">Full Name <span className="text-red-500">*</span></Label>
-                  <Input id="donorName" name="donorName" value={formData.donorName} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
+            <div className="glass-panel rounded-[24px] p-md max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <h2 className="font-headline-md text-headline-md text-primary mb-6">Donor Information</h2>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Full Name *</label>
+                    <input name="donorName" value={formData.donorName} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="John Doe" type="text" />
+                  </div>
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Email Address *</label>
+                    <input name="donorEmail" value={formData.donorEmail} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="john@example.com" type="email" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="donorEmail">Email Address <span className="text-red-500">*</span></Label>
-                  <Input id="donorEmail" name="donorEmail" type="email" value={formData.donorEmail} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Phone Number *</label>
+                    <input name="donorPhone" value={formData.donorPhone} onChange={handleInputChange} required className="w-full h-[56px] px-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md" placeholder="+1 (555) 000-0000" type="tel" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="donorPhone">Phone Number <span className="text-red-500">*</span></Label>
-                  <Input id="donorPhone" name="donorPhone" type="tel" value={formData.donorPhone} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white" />
+                <div>
+                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Pickup Address *</label>
+                  <textarea name="donorAddress" value={formData.donorAddress} onChange={handleInputChange} required className="w-full p-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md min-h-[100px]" placeholder="Enter full address..."></textarea>
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="donorAddress">Pickup Address <span className="text-red-500">*</span></Label>
-                  <Textarea id="donorAddress" name="donorAddress" value={formData.donorAddress} onChange={handleInputChange} required className="bg-slate-50 border-slate-200 focus:bg-white min-h-[100px]" />
+                <div>
+                  <label className="block font-label-sm text-label-sm text-on-surface-variant mb-xs">Additional Notes</label>
+                  <textarea name="notes" value={formData.notes} onChange={handleInputChange} className="w-full p-4 rounded-[12px] border border-outline-variant bg-surface focus:ring-primary focus:border-primary font-body-md min-h-[80px]" placeholder="Any specific instructions..."></textarea>
                 </div>
               </div>
-              <div className="flex justify-between pt-4">
-                <Button type="button" variant="outline" onClick={prevStep} className="rounded-full">Back</Button>
-                <Button type="button" onClick={nextStep} className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 rounded-full">Review</Button>
+              <div className="pt-6 flex justify-between gap-4 border-t border-outline-variant/20 mt-8">
+                <button type="button" onClick={prevStep} className="px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                  Back
+                </button>
+                <button type="button" onClick={nextStep} className="bg-primary-container text-on-primary font-label-md text-label-md px-8 py-3 rounded-[16px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-2">
+                  Review Submission
+                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
               </div>
             </div>
           )}
 
           {currentStep === 3 && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="bg-slate-50 rounded-xl p-6 space-y-6 border border-slate-200">
-                <div>
-                  <h4 className="text-sm font-semibold text-emerald-700 mb-3 uppercase tracking-wider">1. Medicine Info</h4>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div><span className="text-slate-500 block mb-1">Name:</span> <span className="font-medium text-slate-900">{formData.medicineName || '-'}</span></div>
-                    <div><span className="text-slate-500 block mb-1">Brand:</span> <span className="font-medium text-slate-900">{formData.brand || '-'}</span></div>
-                    <div><span className="text-slate-500 block mb-1">Quantity:</span> <span className="font-medium text-slate-900">{formData.quantity || '-'}</span></div>
-                    <div><span className="text-slate-500 block mb-1">Expiry Date:</span> <span className="font-medium text-slate-900">{formData.expiryDate || '-'}</span></div>
+            <div className="glass-panel rounded-[24px] p-md max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <h2 className="font-headline-md text-headline-md text-primary mb-6">Review Donation</h2>
+              
+              <div className="space-y-6">
+                <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6">
+                  <h3 className="font-label-md text-label-md text-primary uppercase tracking-wider mb-4 border-b border-outline-variant/20 pb-2">Medicine Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Name</p>
+                      <p className="font-body-md text-on-surface">{formData.medicineName || '-'}</p>
+                    </div>
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Brand</p>
+                      <p className="font-body-md text-on-surface">{formData.brand || '-'}</p>
+                    </div>
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Quantity</p>
+                      <p className="font-body-md text-on-surface">{formData.quantity || '-'}</p>
+                    </div>
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Expiry Date</p>
+                      <p className="font-body-md text-on-surface">{formData.expiryDate || '-'}</p>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="border-t border-slate-200 pt-6">
-                  <h4 className="text-sm font-semibold text-emerald-700 mb-3 uppercase tracking-wider">2. Donor Info</h4>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div><span className="text-slate-500 block mb-1">Name:</span> <span className="font-medium text-slate-900">{formData.donorName || '-'}</span></div>
-                    <div><span className="text-slate-500 block mb-1">Phone:</span> <span className="font-medium text-slate-900">{formData.donorPhone || '-'}</span></div>
-                    <div className="col-span-2"><span className="text-slate-500 block mb-1">Address:</span> <span className="font-medium text-slate-900">{formData.donorAddress || '-'}</span></div>
+
+                <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6">
+                  <h3 className="font-label-md text-label-md text-primary uppercase tracking-wider mb-4 border-b border-outline-variant/20 pb-2">Donor Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Name</p>
+                      <p className="font-body-md text-on-surface">{formData.donorName || '-'}</p>
+                    </div>
+                    <div>
+                      <p className="font-label-sm text-on-surface-variant mb-1">Phone</p>
+                      <p className="font-body-md text-on-surface">{formData.donorPhone || '-'}</p>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="font-label-sm text-on-surface-variant mb-1">Address</p>
+                      <p className="font-body-md text-on-surface">{formData.donorAddress || '-'}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-between pt-4">
-                <Button type="button" variant="outline" onClick={prevStep} className="rounded-full">Back</Button>
-                <Button type="submit" disabled={isSubmitting} className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 rounded-full">
+              <div className="pt-6 flex justify-between gap-4 border-t border-outline-variant/20 mt-8">
+                <button type="button" onClick={prevStep} className="px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                  Back
+                </button>
+                <button type="submit" disabled={isSubmitting} className="bg-primary text-on-primary font-label-md text-label-md px-8 py-3 rounded-[16px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-2">
                   {isSubmitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Submitting...</>
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Submitting...
+                    </>
                   ) : (
-                    "Confirm & Submit"
+                    <>
+                      <span className="material-symbols-outlined text-[18px]">verified</span>
+                      Confirm & Submit
+                    </>
                   )}
-                </Button>
+                </button>
               </div>
             </div>
           )}
-
         </form>
-      </CardContent>
-    </Card>
+      </div>
+      
+      {/* Trust Banner */}
+      <div className="mt-xl flex items-center justify-center gap-2 text-on-surface-variant opacity-70">
+        <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
+        <span className="font-label-sm text-label-sm tracking-wider uppercase">Secured by VITAMEND AI</span>
+      </div>
+    </>
   )
 }
